@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiar Sesión - Senda</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 { color: #333; margin-bottom: 20px; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover { transform: scale(1.05); background: #5568d3; }
+        #status { margin-top: 20px; padding: 15px; border-radius: 10px; }
+        .success { background: #d4edda; color: #155724; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Herramienta de Limpieza de Sesión</h1>
+        <p>Esta herramienta eliminará todos los datos de autenticación almacenados en tu navegador.</p>
+        
+        <button onclick="clearSession()">🗑️ Limpiar Sesión</button>
+        <button onclick="goToLogin()">🔐 Ir a Login</button>
+        <button onclick="goToHome()">🏠 Ir a Inicio</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function clearSession() {
+            const status = document.getElementById('status');
+            let removed = 0;
+            
+            Object.keys(localStorage).forEach(key => {
+                if (key.includes('supabase')) {
+                    console.log('Removing:', key);
+                    localStorage.removeItem(key);
+                    removed++;
+                }
+            });
+            
+            Object.keys(sessionStorage).forEach(key => {
+                if (key.includes('supabase')) {
+                    console.log('Removing from sessionStorage:', key);
+                    sessionStorage.removeItem(key);
+                    removed++;
+                }
+            });
+            
+            status.className = 'success';
+            status.innerHTML = `✅ Sesión limpiada correctamente!<br>Se eliminaron ${removed} elementos.<br><br>Ahora puedes hacer login de nuevo.`;
+        }
+
+        function goToLogin() {
+            window.location.href = '/#/login';
+        }
+
+        function goToHome() {
+            window.location.href = '/';
+        }
+
+        // Auto-check on load
+        window.onload = function() {
+            const status = document.getElementById('status');
+            const keys = Object.keys(localStorage).filter(k => k.includes('supabase'));
+            
+            if (keys.length > 0) {
+                status.className = 'info';
+                status.innerHTML = `ℹ️ Se encontraron ${keys.length} elementos de sesión activos.`;
+            } else {
+                status.className = 'success';
+                status.innerHTML = '✅ No hay sesión activa.';
+            }
+        };
+    </script>
+</body>
+</html>

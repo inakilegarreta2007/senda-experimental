@@ -1,0 +1,7 @@
+{
+  "name": "Senda",
+  "description": "Senda: El camino más corto para ayudar. Plataforma integral para la gestión y visibilidad de la red de asistencia socio-eclesial en la provincia de Santa Fe.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
