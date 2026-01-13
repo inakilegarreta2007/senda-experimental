@@ -55,7 +55,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('🔓 Dev Auth Active:', devMode);
             // Support multiple dev roles
             const isRep = devMode === 'representative';
-            const mockUser = isRep ? { ...DEV_USER, id: 'dev-rep-id', user_metadata: { role: 'REPRESENTATIVE', name: 'Juan Rep' }, email: 'rep@nodo.org' } : DEV_USER;
+            const mockUser = isRep ? {
+                ...DEV_USER,
+                id: 'dev-rep-id',
+                user_metadata: {
+                    role: 'REPRESENTATIVE',
+                    name: 'Juan Rep',
+                    institution_id: '1' // LINKED NODE (Remove this line to test 'Porch/Waiting Room')
+                },
+                email: 'rep@nodo.org'
+            } : DEV_USER;
 
             setSession({ ...DEV_SESSION, user: mockUser });
             setUser(mockUser);
