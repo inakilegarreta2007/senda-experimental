@@ -6,7 +6,7 @@ import { useConfig, DEFAULT_CONFIG } from '@/contexts/ConfigContext';
 const Vinculos: React.FC = () => {
   const { config: globalConfig, updateConfig, loading } = useConfig();
   const [config, setConfig] = useState<SiteConfig>(DEFAULT_CONFIG);
-  const [activeTab, setActiveTab] = useState<'general' | 'home' | 'map' | 'impact' | 'style'>('home');
+  const [activeTab, setActiveTab] = useState<'general' | 'home' | 'map' | 'impact' | 'style' | 'portal'>('home');
   const [isSaving, setIsSaving] = useState(false);
 
   // Sync with global config on load
@@ -52,6 +52,7 @@ const Vinculos: React.FC = () => {
             <NavItem icon="home" label="Inicio" active={activeTab === 'home'} onClick={() => setActiveTab('home')} />
             <NavItem icon="map" label="Mapa" active={activeTab === 'map'} onClick={() => setActiveTab('map')} />
             <NavItem icon="bar_chart" label="Impacto" active={activeTab === 'impact'} onClick={() => setActiveTab('impact')} />
+            <NavItem icon="Meeting_Room" label="Sala de Espera" active={activeTab === 'portal'} onClick={() => setActiveTab('portal')} />
           </NavSection>
           <NavSection title="GLOBAL">
             <NavItem icon="palette" label="Apariencia" active={activeTab === 'style'} onClick={() => setActiveTab('style')} />
@@ -59,8 +60,106 @@ const Vinculos: React.FC = () => {
           </NavSection>
         </aside>
 
+
         {/* Content Area */}
         <div className="flex-1 bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm p-10 animate-in fade-in zoom-in-95 duration-300">
+
+          {/* PORTAL TAB */}
+          {activeTab === 'portal' && (
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+
+              {/* Left Column: Editor */}
+              <div className="space-y-10">
+                <Container title="Sala de Espera (Bienvenida)" icon="meeting_room">
+                  <p className="text-sm text-slate-500 mb-6 font-medium">
+                    Configure el mensaje que ven los usuarios nuevos antes de ser asignados a un Nodo.
+                  </p>
+                  <div className="grid grid-cols-1 gap-6">
+                    <Field
+                      label="Título de Bienvenida"
+                      value={config.pages.portal?.welcomeTitle || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, pages: { ...prev.pages, portal: { ...prev.pages.portal, welcomeTitle: v } } }))}
+                    />
+                    <Field
+                      label="Subtítulo (Ej: Registro Federal...)"
+                      value={config.pages.portal?.welcomeSubtitle || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, pages: { ...prev.pages, portal: { ...prev.pages.portal, welcomeSubtitle: v } } }))}
+                    />
+                    <Field
+                      label="Mensaje Principal (Soporta HTML)"
+                      value={config.pages.portal?.welcomeMessageIntro || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, pages: { ...prev.pages, portal: { ...prev.pages.portal, welcomeMessageIntro: v } } }))}
+                      type="textarea"
+                    />
+                    <Field
+                      label="Frase Inspiradora / Cita"
+                      value={config.pages.portal?.quote || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, pages: { ...prev.pages, portal: { ...prev.pages.portal, quote: v } } }))}
+                      type="textarea"
+                    />
+                    <Field
+                      label="Mensaje Explicativo Inferior (Soporta HTML)"
+                      value={config.pages.portal?.welcomeMessageExplain || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, pages: { ...prev.pages, portal: { ...prev.pages.portal, welcomeMessageExplain: v } } }))}
+                      type="textarea"
+                    />
+                  </div>
+                </Container>
+              </div>
+
+              {/* Right Column: Live Preview */}
+              <div className="relative">
+                <div className="sticky top-24">
+                  <h3 className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] mb-4 text-center">Vista Previa en Vivo</h3>
+
+                  {/* Simulated Porch Component */}
+                  <div className="w-full bg-slate-50 dark:bg-slate-950 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 shadow-inner flex items-center justify-center min-h-[600px]">
+                    <div className="max-w-sm w-full bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl shadow-primary/10 border border-slate-200 dark:border-slate-800 p-8 text-center relative overflow-hidden transform scale-90 sm:scale-100 transition-all">
+                      {/* Decorative BG */}
+                      <div className="absolute -top-20 -right-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                      <div className="relative z-10">
+                        <div className="size-16 bg-celeste/20 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-white dark:ring-slate-900">
+                          <span className="material-symbols-outlined text-3xl">church</span>
+                        </div>
+
+                        <h1 className="text-xl font-black text-primary dark:text-white mb-2">
+                          {config.pages.portal?.welcomeTitle || 'Bienvenido a SENDA'}
+                        </h1>
+                        <p className="text-xs font-medium text-slate-500 mb-6 uppercase tracking-wider">
+                          {config.pages.portal?.welcomeSubtitle || 'Registro Federal de Intervención Social'}
+                        </p>
+
+                        <div className="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-xs">
+                          <div dangerouslySetInnerHTML={{ __html: config.pages.portal?.welcomeMessageIntro || 'Mensaje de bienvenida...' }} />
+
+                          <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border-l-4 border-accent text-left relative overflow-hidden">
+                            <span className="absolute top-2 right-2 text-accent/20 material-symbols-outlined text-3xl">format_quote</span>
+                            <p className="italic font-medium text-amber-800 dark:text-amber-200 relative z-10">
+                              {config.pages.portal?.quote || '"Frase inspiradora..."'}
+                            </p>
+                          </div>
+
+                          <div dangerouslySetInnerHTML={{ __html: config.pages.portal?.welcomeMessageExplain || 'Explicación del proceso...' }} />
+                        </div>
+
+                        <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3 opacity-50 grayscale">
+                          <button className="w-full py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-600 font-bold flex items-center justify-center gap-2 text-xs pointer-events-none">
+                            <span className="material-symbols-outlined text-sm">refresh</span>
+                            Consultar Estado (Simulado)
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-center text-xs text-slate-400 mt-4 italic">
+                    Así es como lo verá el usuario en su dispositivo.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          )}
 
           {/* HOME TAB */}
           {activeTab === 'home' && (
@@ -244,6 +343,23 @@ const Vinculos: React.FC = () => {
               </Container>
               <Container title="Mantenimiento" icon="build">
                 <Toggle label="Modo Mantenimiento" checked={config.general.maintenanceMode} onChange={() => setConfig(prev => ({ ...prev, general: { ...prev.general, maintenanceMode: !prev.general.maintenanceMode } }))} />
+
+                {config.general.maintenanceMode && (
+                  <div className="mt-6 space-y-6 pt-6 border-t border-slate-100 animate-in fade-in slide-in-from-top-4">
+                    <Field
+                      label="Título (Soporta HTML)"
+                      value={config.general.maintenanceTitle || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, general: { ...prev.general, maintenanceTitle: v } }))}
+                      type="textarea"
+                    />
+                    <Field
+                      label="Mensaje (Soporta HTML)"
+                      value={config.general.maintenanceMessage || ''}
+                      onChange={v => setConfig(prev => ({ ...prev, general: { ...prev.general, maintenanceMessage: v } }))}
+                      type="textarea"
+                    />
+                  </div>
+                )}
               </Container>
             </div>
           )}

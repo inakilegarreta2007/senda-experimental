@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 :root {
-    --color-primary: #1c388d;
-    --color-secondary: #64748b;
-    --color-accent: #f59e0b;
+    --color-primary: #0060A9;
+    /* Azul Institucional / Moreno */
+    --color-secondary: #475569;
+    /* Gris Pizarra sobrio */
+    --color-accent: #E5A642;
+    /* Dorado Eclesial */
+    --color-celeste: #75AADB;
+    /* Celeste Bandera */
 }
 
 .material-symbols-outlined {

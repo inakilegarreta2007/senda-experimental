@@ -123,15 +123,8 @@ const PortalNodeView: React.FC = () => {
     );
 
     if (!inst) return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center bg-slate-50 dark:bg-slate-950">
-            <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">link_off</span>
-            <h1 className="text-2xl font-black text-slate-800 dark:text-white mb-2">Cuenta No Vinculada</h1>
-            <p className="text-slate-500 max-w-md mx-auto mb-6">
-                Tu usuario tiene permisos de Referente, pero aún no ha sido vinculado a ninguna Institución específica en el sistema.
-            </p>
-            <div className="p-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-xl border border-amber-100 dark:border-amber-800/30 text-sm font-bold">
-                ⚠️ Protocolo de Seguridad: La vinculación debe ser aprobada manualmente por un Administrador.
-            </div>
+        <div className="min-h-screen flex items-center justify-center">
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Cargando información del nodo...</p>
         </div>
     );
 

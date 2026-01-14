@@ -231,6 +231,14 @@ const App: React.FC = () => {
             <span className="material-symbols-outlined text-xl">lock</span>
           </a>
         )}
+
+        {/* Maintenance Indicator for Admins/Users with access */}
+        {config.general?.maintenanceMode && isAuthenticated && (
+          <div className="bg-amber-400 text-amber-950 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-center sticky top-0 z-[100] shadow-sm flex items-center justify-center gap-2">
+            <span className="material-symbols-outlined text-sm">construction</span>
+            Sitio en Mantenimiento (Tienes acceso VIP)
+          </div>
+        )}
         <Suspense fallback={<Loading />}>
           <Routes>
             {/* PUBLIC ROUTES (Respect Maintenance Mode) */}

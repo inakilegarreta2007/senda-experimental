@@ -116,6 +116,12 @@ const Registro: React.FC<RegistroProps> = ({ onAdd }) => {
       return;
     }
 
+    // FINAL GLOBAL VALIDATION
+    if (!validateStep(1) || !validateStep(2) || !validateStep(3) || !validateStep(4)) {
+      toast.error('Por favor revise los pasos anteriores. Hay datos incompletos o inválidos.');
+      return;
+    }
+
     if (!formData.declarationTruth || !formData.declarationAuthVerify || !formData.declarationTerms) {
       toast.error('Debes aceptar todas las declaraciones finales');
       return;
@@ -232,8 +238,8 @@ const Registro: React.FC<RegistroProps> = ({ onAdd }) => {
       alert('Gracias por su solicitud.\nLa información ingresada será evaluada por el equipo de validación de SENDA.\nEn caso de requerir información adicional, nos comunicaremos a través de los canales oficiales proporcionados.');
 
     } catch (err: any) {
-      console.error(err);
-      toast.error('Error al enviar solicitud. Intente nuevamente.');
+      console.error('SUBMISSION ERROR:', err);
+      toast.error(`Error al enviar: ${err.message || 'Intente nuevamente'}`);
     } finally {
       setIsSaving(false);
     }
@@ -260,6 +266,66 @@ const Registro: React.FC<RegistroProps> = ({ onAdd }) => {
     );
   }
 
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validateStep = (step: number) => {
+    switch (step) {
+      case 1: // Identidad
+        if (!formData.legalName?.trim()) { toast.error('El Nombre del Nodo es obligatorio.'); return false; }
+        if (!formData.type?.trim()) { toast.error('El Tipo de Nodo es obligatorio.'); return false; }
+        if (!formData.country?.trim()) { toast.error('El País es obligatorio.'); return false; }
+        if (!formData.province?.trim()) { toast.error('La Provincia es obligatoria.'); return false; }
+        if (!formData.city?.trim()) { toast.error('La Localidad es obligatoria.'); return false; }
+        if (!formData.address?.trim()) { toast.error('La Calle es obligatoria.'); return false; }
+        if (!formData.addressNumber?.trim()) { toast.error('La Altura/Número es obligatoria.'); return false; }
+        return true;
+
+      case 2: // Info Pública
+        if (!formData.description?.trim() || formData.description.length < 10) {
+          toast.error('La descripción es obligatoria y debe ser detallada (min 10 caracteres).');
+          return false;
+        }
+        return true;
+
+      case 3: // Contacto
+        if (!formData.email?.trim() || !validateEmail(formData.email)) {
+          toast.error('Ingrese un Email válido (debe contener @ y un dominio).');
+          return false;
+        }
+        if (!formData.phone?.trim() || formData.phone.length < 6) {
+          toast.error('Ingrese un Celular válido.');
+          return false;
+        }
+        if (!formData.contactEmailName?.trim()) {
+          toast.error('El nombre del referente del Email es obligatorio.');
+          return false;
+        }
+        if (!formData.contactPhoneName?.trim()) {
+          toast.error('El nombre del referente del Celular es obligatorio.');
+          return false;
+        }
+        return true;
+
+      case 4: // Vinculación
+        if (!formData.targetAudience?.trim()) {
+          toast.error('Definir el Público y Alcance es obligatorio.');
+          return false;
+        }
+        return true;
+
+      default: return true;
+    }
+  };
+
+  const handleNext = () => {
+    if (validateStep(activeStep)) {
+      setActiveStep(p => p + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col font-display">
       <header className="p-6 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center sticky top-0 z-50">
@@ -277,19 +343,69 @@ const Registro: React.FC<RegistroProps> = ({ onAdd }) => {
       <main className="flex-1 flex flex-col items-center justify-center p-6 py-12">
         <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-[3.5rem] shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden flex h-[80vh]">
           {/* Sidebar Wizard */}
-          <div className="w-64 bg-slate-50 dark:bg-slate-900 border-r border-slate-100 dark:border-slate-700 p-8 flex flex-col hidden lg:flex">
-            <h2 className="text-xl font-black mb-8 text-slate-800 dark:text-white leading-none">Formulario de <br /><span className="text-primary">Adhesión</span></h2>
-            <div className="space-y-2 flex-1 overflow-y-auto pr-2">
-              {STEPS.map(step => (
-                <button
-                  key={step.id}
-                  onClick={() => setActiveStep(step.id)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left ${activeStep === step.id ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                >
-                  <span className={`material-symbols-outlined text-[20px] ${activeStep === step.id ? 'text-white' : 'text-slate-400'}`}>{step.icon}</span>
-                  <span className="text-[11px] font-black uppercase tracking-wide">{step.title}</span>
-                </button>
-              ))}
+          <div className="w-80 bg-slate-900 border-r border-slate-800 p-8 flex flex-col hidden lg:flex relative overflow-hidden">
+            {/* Background Texture */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+
+            <div className="relative z-10 mb-10">
+              <h2 className="text-2xl font-black text-white leading-tight tracking-tight">
+                Alta de <span className="text-accent">Nodo</span>
+              </h2>
+              <p className="text-slate-400 text-xs mt-2 font-medium leading-relaxed">
+                Complete el formulario oficial para integrar su institución a la red federal SENDA.
+              </p>
+            </div>
+
+            <div className="space-y-0 flex-1 overflow-y-auto pr-2 relative">
+              {/* Vertical Line Container */}
+              <div className="absolute left-[1.65rem] top-4 bottom-0 w-0.5 bg-slate-800 rounded-full z-0"></div>
+
+              {STEPS.map((step, idx) => {
+                // Progressive Reveal Logic
+                if (step.id > activeStep) return null;
+
+                const isActive = activeStep === step.id;
+                const isCompleted = step.id < activeStep;
+
+                return (
+                  <button
+                    key={step.id}
+                    onClick={() => {
+                      if (isCompleted) setActiveStep(step.id);
+                    }}
+                    disabled={!isCompleted && !isActive}
+                    className={`relative z-10 w-full flex items-start gap-4 p-4 rounded-2xl transition-all text-left group animate-in slide-in-from-left-4 fade-in duration-500 fill-mode-backwards ${isActive ? 'bg-slate-800/50 border border-slate-700 shadow-xl' : 'hover:bg-slate-800/30 border border-transparent'}`}
+                    style={{ animationDelay: `${idx * 100}ms` }}
+                  >
+                    {/* Icon Node */}
+                    <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${isActive ? 'bg-primary border-accent text-white shadow-[0_0_15px_rgba(229,166,66,0.5)] scale-110' : isCompleted ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-500'}`}>
+                      {isCompleted ? <span className="material-symbols-outlined text-[16px] font-bold">check</span> : <span className="material-symbols-outlined text-[16px]">{step.icon}</span>}
+                    </div>
+
+                    <div className="flex-1 pt-0.5">
+                      <span className={`text-[10px] font-black uppercase tracking-widest block mb-0.5 ${isActive ? 'text-accent' : isCompleted ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        Paso 0{step.id}
+                      </span>
+                      <span className={`text-sm font-bold block ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-300'}`}>
+                        {step.title}
+                      </span>
+                      {isActive && <div className="mt-2 h-1 w-12 bg-primary rounded-full animate-pulse"></div>}
+                    </div>
+
+                    {isActive && (
+                      <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-b from-primary to-accent rounded-r-2xl"></div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Footer / Quote */}
+            <div className="mt-auto pt-6 border-t border-slate-800">
+              <div className="flex items-center gap-3 opacity-60">
+                <img src={Logo} alt="Senda" className="h-8 grayscale brightness-200" />
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Plataforma Federal</span>
+              </div>
             </div>
           </div>
 
@@ -334,7 +450,7 @@ const Registro: React.FC<RegistroProps> = ({ onAdd }) => {
                 )}
 
                 {activeStep < STEPS.length ? (
-                  <button type="button" onClick={() => setActiveStep(p => p + 1)} className="px-8 py-3 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-lg hover:bg-blue-800 transition-all flex items-center gap-2">
+                  <button type="button" onClick={handleNext} className="px-8 py-3 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-lg hover:bg-blue-800 transition-all flex items-center gap-2">
                     Siguiente <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                   </button>
                 ) : (

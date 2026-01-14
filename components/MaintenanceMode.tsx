@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useConfig } from '../contexts/ConfigContext';
 
 interface MaintenanceModeProps {
     banner?: string;
 }
 
 const MaintenanceMode: React.FC<MaintenanceModeProps> = ({ banner }) => {
+    const { config } = useConfig();
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
             <div className="absolute inset-0 opacity-20 scale-110">
@@ -17,12 +19,8 @@ const MaintenanceMode: React.FC<MaintenanceModeProps> = ({ banner }) => {
                     <span className="material-symbols-outlined text-5xl">construction</span>
                 </div>
                 <div className="space-y-4">
-                    <h1 className="text-4xl md:text-7xl font-black text-white tracking-tighter leading-none">
-                        Evolucionando <br /> para vos
-                    </h1>
-                    <p className="text-white/40 text-lg md:text-xl max-w-lg mx-auto font-medium leading-relaxed">
-                        El portal de Senda se encuentra en mantenimiento técnico. <br className="hidden md:block" /> Volveremos en breve con mejoras.
-                    </p>
+                    <div className="text-4xl md:text-7xl font-black text-white tracking-tighter leading-none" dangerouslySetInnerHTML={{ __html: config.general.maintenanceTitle || 'Mantenimiento' }} />
+                    <div className="text-white/40 text-lg md:text-xl max-w-lg mx-auto font-medium leading-relaxed" dangerouslySetInnerHTML={{ __html: config.general.maintenanceMessage || 'Volveremos pronto.' }} />
                 </div>
                 <div className="pt-10">
                     <Link to="/login" className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white/30 hover:text-white transition-all">

@@ -33,159 +33,166 @@ const PortalDashboard: React.FC = () => {
 
     // LOADING STATE
     if (isChecking) return (
-        <div className="min-h-[80vh] flex flex-col items-center justify-center gap-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-            <p className="text-xs font-black uppercase tracking-widest text-slate-400">Verificando Credenciales...</p>
+        <div className="min-h-[80vh] flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary"></div>
+            <p className="text-xs font-black uppercase tracking-widest text-primary/70">Verificando Credenciales...</p>
         </div>
     );
 
-    // WAITING ROOM (NO LINK)
+    // ERROR STATE (HAS ID BUT NOT FOUND IN DATA)
     if (!myNode) return (
-        <div className="min-h-[80vh] flex items-center justify-center p-6 font-display bg-slate-50/50 dark:bg-slate-950/50">
-            <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-800 p-10 text-center relative overflow-hidden">
-                {/* Decorative BG */}
-                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-amber-50 to-transparent dark:from-amber-900/20 pointer-events-none"></div>
-
-                <div className="relative z-10">
-                    <div className="size-24 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner">
-                        🙏
-                    </div>
-
-                    <h1 className="text-2xl font-black text-slate-800 dark:text-white mb-4">
-                        ¡Hola! Qué bueno tenerte acá.
-                    </h1>
-
-                    <div className="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
-                        <p>
-                            Ya estás dentro de la familia <strong>SENDA</strong>, pero todavía nos falta un pasito importante.
-                        </p>
-                        <p className="italic font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-4 rounded-2xl border border-amber-100 dark:border-amber-800/50">
-                            "La paciencia todo lo alcanza. Quien a Dios tiene nada le falta."
-                        </p>
-                        <p>
-                            Un administrador está revisando tu solicitud para asignarte tu <strong>Misión (Nodo)</strong>. En cuanto te vinculen con tu parroquia o comedor, este panel se va a iluminar automáticamente para que puedas empezar a trabajar.
-                        </p>
-                    </div>
-
-                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-4">
-                            Mientras tanto...
-                        </p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
-                        >
-                            <span className="material-symbols-outlined">refresh</span>
-                            Verificar si ya me dieron el alta
-                        </button>
-                    </div>
-                </div>
+        <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center">
+            <div className="size-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4">
+                <span className="material-symbols-outlined text-3xl">error_outline</span>
             </div>
+            <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Error de Vinculación</h2>
+            <p className="text-slate-500 max-w-sm mb-6">
+                Su cuenta tiene un ID de nodo asignado, pero no pudimos recuperar los datos. Por favor, contacte a soporte.
+            </p>
+            <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-slate-900 text-white rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors"
+            >
+                Reintentar
+            </button>
         </div>
     );
 
     // DASHBOARD (LINKED)
-
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-slate-50/50 dark:bg-slate-950/50 font-display p-6">
+        <div className="flex flex-col items-center min-h-[85vh] bg-slate-50 dark:bg-slate-950 font-display p-4 md:p-8">
 
-            {/* MAIN CARD */}
-            <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden relative">
+            {/* MAIN DASHBOARD CONTAINER */}
+            <div className="w-full max-w-4xl">
 
-                {/* Decorative Background Blur */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                {/* WELCOME BANNER */}
+                <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary to-[#004b87] text-white shadow-2xl shadow-primary/20 mb-8">
+                    {/* Background Pattern */}
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-celeste/20 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/3 pointer-events-none"></div>
 
-                <div className="p-8 md:p-12 relative z-10">
-
-                    {/* HEADER: Identity & Status */}
-                    <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left justify-between gap-6 mb-12">
-                        <div>
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100 mb-3">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                </span>
-                                Nodo Activo
+                    <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
+                        <div className="flex-1 text-center md:text-left">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-widest shadow-lg mb-4">
+                                <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                                Nodo Pastoral Activo
                             </div>
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                            <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-2">
                                 {myNode.name}
                             </h1>
-                            <p className="text-slate-500 font-medium mt-2 max-w-md mx-auto md:mx-0">
+                            <div className="flex items-center justify-center md:justify-start gap-2 text-celeste font-medium">
+                                <span className="material-symbols-outlined text-lg">location_on</span>
                                 {myNode.city}, {myNode.province}
-                            </p>
+                            </div>
                         </div>
 
-                        {/* Quick Stats Widget (Mocked for aesthetics) */}
-                        <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl border border-slate-100 dark:border-slate-700/50">
-                            <div className="text-center px-2">
-                                <span className="block text-xl font-black text-slate-800 dark:text-white">{myNode.volunteersCount}</span>
-                                <span className="text-[9px] text-slate-400 uppercase font-black tracking-wider">Voluntarios</span>
+                        {/* Quick Stats in Banner */}
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center gap-6 shadow-inner">
+                            <div className="text-center">
+                                <span className="block text-2xl font-black text-white">{myNode.volunteersCount}</span>
+                                <span className="text-[10px] text-celeste uppercase font-bold tracking-wider">Voluntarios</span>
                             </div>
-                            <div className="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
-                            <div className="text-center px-2">
-                                <span className="block text-xl font-black text-slate-800 dark:text-white">Active</span>
-                                <span className="text-[9px] text-slate-400 uppercase font-black tracking-wider">Estado</span>
+                            <div className="w-px h-8 bg-white/20"></div>
+                            <div className="text-center">
+                                <span className="block text-2xl font-black text-accent">100%</span>
+                                <span className="text-[10px] text-celeste uppercase font-bold tracking-wider">Impacto</span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    {/* ACTION GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* GRID SYSTEM */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                        {/* Primary Action: Visual Edit */}
-                        <Link to="/portal/view" className="group relative overflow-hidden bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-6 rounded-3xl col-span-1 md:col-span-2 shadow-xl shadow-slate-900/10 hover:shadow-2xl hover:scale-[1.01] transition-all">
-                            <div className="relative z-10 flex flex-col h-full justify-between min-h-[140px]">
-                                <div className="size-12 rounded-2xl bg-white/20 dark:bg-slate-900/10 flex items-center justify-center text-2xl backdrop-blur-sm mb-4">
-                                    ✏️
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black uppercase tracking-tight">Gestionar Ficha Pública</h3>
-                                    <p className="text-white/70 dark:text-slate-600/80 text-sm font-medium mt-1">
-                                        Editar teléfonos, horarios y descripción directamente sobre la vista pública.
-                                    </p>
-                                </div>
+                    {/* LEFT COLUMN: PRIMARY ACTIONS */}
+                    <div className="md:col-span-2 space-y-6">
+
+                        {/* MAIN ACTION CARD */}
+                        <Link to="/portal/view" className="group relative block bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                            <div className="absolute top-0 right-0 p-8 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                                <span className="material-symbols-outlined text-8xl text-slate-50 dark:text-slate-800">edit_document</span>
                             </div>
-                            {/* Hover Effect */}
-                            <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0 duration-300">
-                                <span className="material-symbols-outlined text-4xl">arrow_forward</span>
+
+                            <div className="relative z-10">
+                                <div className="size-14 rounded-2xl bg-primary/5 text-primary flex items-center justify-center text-3xl mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                    <span className="material-symbols-outlined">edit</span>
+                                </div>
+                                <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-2">
+                                    Gestionar Ficha Institucional
+                                </h3>
+                                <p className="text-slate-500 font-medium leading-relaxed max-w-md">
+                                    Actualice los horarios de misa, servicios de caridad, y datos de contacto visibles en el mapa nacional.
+                                </p>
+                                <div className="mt-6 inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wide group-hover:gap-4 transition-all">
+                                    Ingresar al Editor <span className="material-symbols-outlined">arrow_forward</span>
+                                </div>
                             </div>
                         </Link>
 
-                        {/* Secondary: Profile/Config */}
-                        <Link to="/portal/profile" className="group bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:bg-white dark:hover:bg-slate-700 transition-all">
-                            <div className="flex items-center justify-between mb-8">
-                                <div className="size-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                                    <span className="material-symbols-outlined">id_card</span>
+                        {/* SECONDARY ACTIONS GRID */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <Link to="/portal/profile" className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 hover:border-celeste/30 transition-all group">
+                                <div className="mb-4 text-slate-400 group-hover:text-secondary transition-colors">
+                                    <span className="material-symbols-outlined text-3xl">verified_user</span>
+                                </div>
+                                <h4 className="font-bold text-slate-800 dark:text-white text-lg">Credenciales</h4>
+                                <p className="text-xs text-slate-500 mt-1">Datos legales y de acceso</p>
+                            </Link>
+
+                            <button className="text-left bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 hover:border-accent/30 transition-all group">
+                                <div className="mb-4 text-slate-400 group-hover:text-accent transition-colors">
+                                    <span className="material-symbols-outlined text-3xl">volunteer_activism</span>
+                                </div>
+                                <h4 className="font-bold text-slate-800 dark:text-white text-lg">Recursos</h4>
+                                <p className="text-xs text-slate-500 mt-1">Material pastoral y guías</p>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    {/* RIGHT COLUMN: INFO WIDGETS */}
+                    <div className="space-y-6">
+
+                        {/* LITURGICAL WIDGET */}
+                        <div className="bg-[#002B55] text-white rounded-[2rem] p-6 relative overflow-hidden shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-2 mb-4 opacity-80">
+                                    <span className="material-symbols-outlined text-accent">calendar_month</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest">Liturgia de Hoy</span>
+                                </div>
+                                <h3 className="text-xl font-bold italic font-serif leading-tight mb-4 text-white/90">
+                                    "Vayan y hagan discípulos a todas las naciones."
+                                </h3>
+                                <div className="text-sm font-medium text-celeste">
+                                    Mateo 28, 19
                                 </div>
                             </div>
-                            <div>
-                                <h4 className="font-bold text-slate-800 dark:text-white">Datos de Identidad</h4>
-                                <p className="text-xs text-slate-400 font-medium mt-1 group-hover:text-slate-500">Configuración interna y legal</p>
-                            </div>
-                        </Link>
+                        </div>
 
-                        {/* Secondary: Support */}
-                        <button className="group text-left bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:bg-white dark:hover:bg-slate-700 transition-all">
-                            <div className="flex items-center justify-between mb-8">
-                                <div className="size-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                        {/* SUPPORT WIDGET */}
+                        <button className="w-full bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-slate-100 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none text-left group hover:ring-2 ring-primary/10 transition-all">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 group-hover:bg-primary group-hover:text-white transition-colors">
                                     <span className="material-symbols-outlined">support_agent</span>
                                 </div>
+                                <span className="px-2 py-1 rounded-md bg-slate-50 text-[10px] font-bold uppercase text-slate-400">Ayuda</span>
                             </div>
-                            <div>
-                                <h4 className="font-bold text-slate-800 dark:text-white">Soporte SENDA</h4>
-                                <p className="text-xs text-slate-400 font-medium mt-1 group-hover:text-slate-500">Contactar a un administrador</p>
-                            </div>
+                            <h4 className="font-bold text-slate-800 dark:text-white">Mesa de Ayuda</h4>
+                            <p className="text-xs text-slate-500 mt-1">Contacte al equipo central SENDA</p>
                         </button>
 
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">
-                            SENDA NODE MANAGEMENT SYSTEM v1.0
-                        </p>
-                    </div>
-
                 </div>
+
+                <div className="mt-12 text-center">
+                    <p className="text-[10px] text-slate-300 dark:text-slate-700 uppercase tracking-[0.2em] font-bold">
+                        Senda Intervención Social Eclesial
+                    </p>
+                </div>
+
             </div>
         </div>
     );

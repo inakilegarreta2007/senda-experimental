@@ -4,6 +4,8 @@ import { SiteConfig } from '../types';
 export const DEFAULT_CONFIG: SiteConfig = {
     general: {
         maintenanceMode: false,
+        maintenanceTitle: 'Evolucionando <br /> para vos',
+        maintenanceMessage: 'El portal de Senda se encuentra en mantenimiento técnico. <br className="hidden md:block" /> Volveremos en breve con mejoras.',
     },
     theme: {
         primaryColor: '#1c388d',
@@ -70,6 +72,13 @@ export const DEFAULT_CONFIG: SiteConfig = {
             subtitle: 'Sistematización de la intervención en la Provincia de Santa Fe.',
             showHero: true,
             showStats: true,
+        },
+        portal: {
+            welcomeTitle: '¡Hola! Qué bueno tenerte acá.',
+            welcomeSubtitle: 'Registro Federal de Intervención Social',
+            welcomeMessageIntro: 'Ya estás dentro de la familia <strong>SENDA</strong>, pero todavía nos falta un pasito importante.',
+            quote: '"La paciencia todo lo alcanza. Quien a Dios tiene nada le falta."',
+            welcomeMessageExplain: 'Un administrador está revisando tu solicitud para asignarte tu <strong>Misión (Nodo)</strong>. En cuanto te vinculen con tu parroquia o comedor, este panel se va a iluminar automáticamente para que puedas empezar a trabajar.'
         },
     },
     features: {

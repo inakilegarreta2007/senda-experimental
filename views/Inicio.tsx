@@ -149,7 +149,7 @@ const Inicio: React.FC<InicioProps> = ({ institutions, stats }) => {
               </p>
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="size-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                  <div className="size-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-2xl">{config.pages.home.about.point1.icon}</span>
                   </div>
                   <div>
@@ -158,7 +158,7 @@ const Inicio: React.FC<InicioProps> = ({ institutions, stats }) => {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="size-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <div className="size-12 rounded-xl bg-celeste/20 text-primary flex items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-2xl">{config.pages.home.about.point2.icon}</span>
                   </div>
                   <div>

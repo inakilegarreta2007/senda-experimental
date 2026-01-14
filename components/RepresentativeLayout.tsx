@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 import Porch from '../views/Porch';
+import { mockInstitutions } from '@/utils/mockData';
 
 const RepresentativeLayout: React.FC = () => {
     const { user, signOut } = useAuth();
@@ -11,14 +12,26 @@ const RepresentativeLayout: React.FC = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const [hasAccess, setHasAccess] = useState<boolean | null>(null); // Null = loading
 
-    // SECURITY CHECK: Does this user have a mission?
+
+
+    // SECURITY CHECK: Does this user have a VALID mission?
     useEffect(() => {
-        // Simple check: do we have the ID?
         const checkAccess = async () => {
             // Simulate a brief check for UX smoothness
             await new Promise(r => setTimeout(r, 600));
+
             const linkedId = user?.user_metadata?.institution_id;
-            setHasAccess(!!linkedId);
+
+            if (!linkedId) {
+                setHasAccess(false);
+                return;
+            }
+
+            // Verify if the node actually exists in our data
+            // In a real app, this would be a Supabase query
+            const isValidNode = mockInstitutions.some(i => i.id === linkedId);
+
+            setHasAccess(isValidNode);
         };
         checkAccess();
     }, [user]);
@@ -77,8 +90,8 @@ const RepresentativeLayout: React.FC = () => {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all group ${isActive
-                                        ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                                        : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary'
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/30'
+                                    : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary'
                                     }`}
                                 title={!isSidebarOpen ? item.label : ''}
                             >

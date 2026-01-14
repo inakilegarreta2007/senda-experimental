@@ -14,6 +14,7 @@ export default {
                 "primary": "var(--color-primary)",
                 "secondary": "var(--color-secondary)",
                 "accent": "var(--color-accent)",
+                "celeste": "var(--color-celeste)",
                 "background-light": "#f6f6f8",
                 "background-dark": "#111521",
                 "surface-light": "#ffffff",

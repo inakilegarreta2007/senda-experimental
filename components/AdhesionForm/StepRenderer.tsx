@@ -199,10 +199,10 @@ export const StepRenderer: React.FC<StepRendererProps> = ({
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Nombre del Referente (Email) <span className="text-slate-300 font-bold ml-1">(Opcional)</span></label>
+                                <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Nombre del Referente (Email) *</label>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">person</span>
-                                    <input type="text" placeholder="Ej: Juan Pérez" className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border-none font-bold" value={formData.contactEmailName} onChange={e => handleChange('contactEmailName', e.target.value)} />
+                                    <input required type="text" placeholder="Ej: Juan Pérez" className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border-none font-bold" value={formData.contactEmailName} onChange={e => handleChange('contactEmailName', e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -217,10 +217,10 @@ export const StepRenderer: React.FC<StepRendererProps> = ({
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Nombre del Referente (Celular) <span className="text-slate-300 font-bold ml-1">(Opcional)</span></label>
+                                <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Nombre del Referente (Celular) *</label>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">person</span>
-                                    <input type="text" placeholder="Ej: María García" className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border-none font-bold" value={formData.contactPhoneName} onChange={e => handleChange('contactPhoneName', e.target.value)} />
+                                    <input required type="text" placeholder="Ej: María García" className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border-none font-bold" value={formData.contactPhoneName} onChange={e => handleChange('contactPhoneName', e.target.value)} />
                                 </div>
                             </div>
                         </div>

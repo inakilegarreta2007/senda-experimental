@@ -137,6 +137,8 @@ export interface CardConfig {
 export interface SiteConfig {
   general: {
     maintenanceMode: boolean;
+    maintenanceTitle: string;
+    maintenanceMessage: string;
   };
   theme: {
     primaryColor: string;
@@ -195,6 +197,13 @@ export interface SiteConfig {
       subtitle: string;
       showHero: boolean;
       showStats: boolean;
+    };
+    portal: {
+      welcomeTitle: string;
+      welcomeSubtitle: string;
+      welcomeMessageIntro: string;
+      quote: string;
+      welcomeMessageExplain: string;
     };
   };
   features: {

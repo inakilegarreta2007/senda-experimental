@@ -43,7 +43,7 @@ const Red: React.FC<RedProps> = ({ institutions, onAdd, onUpdate, loading }) => 
 
     // 3. Contacto
     phone: '', whatsapp: '', email: '', alternativeEmail: '',
-    adminAddress: '', serviceHours: '',
+    adminAddress: '', serviceHours: '', contactEmailName: '', contactPhoneName: '',
 
     // 4. Representante
     responsible: '', repRole: '', repEmail: '', repPhone: '', repDeclaration: false,
